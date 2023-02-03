@@ -18,9 +18,9 @@
         </div>
         <div class="card-body">
             <div class="analytic">
-                <a href="" class="text-primary">Trạng thái 1<span class="text-muted">(10)</span></a>
-                <a href="" class="text-primary">Trạng thái 2<span class="text-muted">(5)</span></a>
-                <a href="" class="text-primary">Trạng thái 3<span class="text-muted">(20)</span></a>
+                <a href="{{request()->fullUrlWithQuery(['status'=>'active'])}}" class="text-primary">kich hoat<span class="text-muted">({{$count[0]}})</span></a>
+                <a href="{{request()->fullUrlWithQuery(['status'=>'trash'])}}" class="text-primary">vo hieu hoa<span class="text-muted">({{$count[1]}})</span></a>
+
             </div>
             <div class="form-action form-inline py-3">
                 <select class="form-control mr-1" id="">
@@ -66,7 +66,9 @@
                         <td>{{$user->created_at}}</td>
                         <td>
                             <a href="#" class="btn btn-success btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
+                            @if(Auth::id()!=$user->id)
+                            <a href="{{route('delete_user', $user->id)}}" onclick="return confirm('ban co chac chan xoa ban ghi nay?')" class="btn btn-danger btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
+                        @endif
                         </td>
                     </tr>
                     <tr>

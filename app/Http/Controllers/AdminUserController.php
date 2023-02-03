@@ -4,20 +4,28 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
     //
     function list(Request $request){
-        $keyword = "";
-        if($request->input('keyword')){
-           $keyword = $request->input('keyword'); 
+        $status = $request->input('status');
+        if($status== 'trash'){
+            $users= User::onlyTrashed()->paginate(10);
+        }else{
+            $keyword = "";
+            if($request->input('keyword')){
+               $keyword = $request->input('keyword'); 
+            }
+            $users= User::where('name', 'LIKE', "%{$keyword}%")->paginate(10);
         }
-        $users= User::where('name', 'LIKE', "%{$keyword}%")->paginate(10);
+        $count_user_active = User::count();
+        $count_user_trash = User::onlyTrashed()->count();
 
-        
-        return view('admin.user.list', compact('users'));
+        $count = [$count_user_active, $count_user_trash];
+        return view('admin.user.list', compact('users', 'count'));
     }
     function add(Request $request){
         if($request->input('btn-add')){
@@ -51,9 +59,16 @@ class AdminUserController extends Controller
                 'password'=>Hash::make($request->input('password')),
             ]);
        
-            return redirect('admin/user/list')->with('status', 'da them');
-        
-        
+            return redirect('admin/user/list')->with('status', 'da them');    
+    }
+    function delete($id){
+        if(Auth::id()!=$id){
+            $user = user::find($id);
+            $user->delete();
+            return redirect('admin/user/list')->with('status', 'da xoa thanh cong');
+        }else{
+            return redirect('admin/user/list')->with('status', 'ban ko the tu xoa minh ra khoi he thong');
+        }
     }
     
 }

@@ -27,4 +27,6 @@ Route::get('dashboard', 'DashboardController@show')->middleware('auth');
 Route::get('admin/user/list', 'AdminUserController@list');
 Route::get('admin/user/add', 'AdminUserController@add');
 Route::post('admin/user/store', 'AdminUserController@store');
+Route::get('admin/user/delete/{id}', 'AdminUserController@delete')->name('delete_user');
+
 });
