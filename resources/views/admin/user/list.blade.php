@@ -2,11 +2,16 @@
 @section('content')
 <div id="content" class="container-fluid">
     <div class="card">
+        @if(session('status'))
+        <div class="alert alert-success">
+            {{session('status')}}
+        </div>
+        @endif
         <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
             <h5 class="m-0 ">Danh sách thành viên</h5>
             <div class="form-search form-inline">
                 <form action="#">
-                    <input type="" class="form-control form-search" placeholder="Tìm kiếm">
+                    <input type="text" class="form-control form-search" name="keyword" value="{{request()->input('keyword')}}" placeholder="Tìm kiếm">
                     <input type="submit" name="btn-search" value="Tìm kiếm" class="btn btn-primary">
                 </form>
             </div>
@@ -41,12 +46,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if($users->total()>0)
+                    @php
+                    $t=0;
+                    @endphp
                     @foreach($users as $user)
+                    @php 
+                    $t++;
+                    @endphp
                     <tr>
                         <td>
                             <input type="checkbox">
                         </td>
-                        <th scope="row">1</th>
+                        <th scope="row">{{$t}}</th>
                         <td>{{$user->name}}</td>
                         
                         <td>{{$user->email}}</td>
@@ -59,7 +71,12 @@
                     </tr>
                     <tr>
                         @endforeach
+                    @else
+                    <tr>
+                        <td colspan="7"><p>ko co ban ghi</p></td>
+                    </tr>
                     
+                    @endif
                 </tbody>
             </table>
             {{$users->links()}}

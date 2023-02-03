@@ -115,7 +115,7 @@
                         </ul>
                     </li>
                     <li class="nav-link">
-                        <a href="?view=list-user">
+                        <a href="{{url('admin/user/list')}}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="far fa-folder"></i>
                             </div>

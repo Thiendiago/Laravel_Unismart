@@ -21,5 +21,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::middleware('auth')->group(function(){
 Route::get('dashboard', 'DashboardController@show')->middleware('auth');
 Route::get('admin/user/list', 'AdminUserController@list');
+Route::get('admin/user/add', 'AdminUserController@add');
+Route::post('admin/user/store', 'AdminUserController@store');
+});
